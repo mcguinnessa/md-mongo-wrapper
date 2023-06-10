@@ -16,7 +16,7 @@ async function getdata(){
     //const database = client.db("trafficDB");
     //const traffic_record = database.collection("traffic");
     const database = client.db(db_tools.DB_NAME);
-    const traffic_record = database.collection(COLLECTION_NAME);
+    const traffic_record = database.collection(db_tools.COLLECTION_NAME);
 
     const filter = {_id: 0, timestamp: 1 , moTraffic: 2};
     const docs = traffic_record.find().project(filter);
