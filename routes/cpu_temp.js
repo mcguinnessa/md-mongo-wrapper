@@ -4,7 +4,7 @@ const {MongoClient} = require('mongodb');
 
 const db_tools = require('../mongo_tools');
 
-const trafficRoute = express.Router();
+const cpuTempRoute = express.Router();
 
 async function getdata(){
     console.log("getData() called")
@@ -38,7 +38,7 @@ async function getdata(){
     return {timedata: timeData, cputemp: cpuTempData};
 }
 
-trafficRoute.get("/", (req, res)=>{
+cpuTempRoute.get("/", (req, res)=>{
 
     res.setHeader('Access-Control-Allow-Origin','*');
 
@@ -52,7 +52,7 @@ trafficRoute.get("/", (req, res)=>{
 
       traffic = {
          timestamps: data.timedata,
-         data: data.cpuTempData
+         data: data.cputemp
       }
 
     res.json(traffic)
@@ -60,7 +60,7 @@ trafficRoute.get("/", (req, res)=>{
 });
 
 
-module.exports = trafficRoute
+module.exports = cpuTempRoute
 
 
 
