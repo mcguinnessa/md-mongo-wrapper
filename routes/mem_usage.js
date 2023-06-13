@@ -17,25 +17,25 @@ async function getdata(){
       const database = client.db(db_tools.DB_NAME);
       const traffic_record = database.collection(db_tools.COLLECTION_NAME);
 
-      const filter = {_id: 0, timestamp: 1 , moTraffic: 2};
+      const filter = {_id: 0, timestamp: 1 , memoryUsage: 2};
       const docs = traffic_record.find().project(filter);
 
       var timeData = [];
-      var moData = [];
+      var memUsageData = [];
 
       for await (const doc of docs) {
         console.log(doc);
 
-        if ( typeof doc.moTraffic !== 'undefined' && doc.moTraffic ) {
+        if ( typeof doc.memoryUsage !== 'undefined' && doc.memoryUsage ) {
           timeData.push(doc.timestamp)
-          moData.push(doc.moTraffic)
+          memUsageData.push(doc.memoryUsage)
         }
       }
     } finally {
       client.close();
     }
 
-    return {timedata: timeData, mo: moData};
+    return {timedata: timeData, memusage: memUsageData};
 }
 
 trafficRoute.get("/", (req, res)=>{
@@ -45,14 +45,14 @@ trafficRoute.get("/", (req, res)=>{
     data_prom = getdata();
 
 //    time_data = [];
-//    mo_data = [];
+//    cpu_usage_data = [];
 
     data_prom.then((data) => {
-//      mo_data = data.modata;
+//      cpu_usage_data = data.cpuusage;
 
       traffic = {
          timestamps: data.timedata,
-         data: data.mo
+         data: data.memusage
       }
 
     res.json(traffic)

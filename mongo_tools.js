@@ -8,8 +8,8 @@ module.exports = {
     const mongodb_password = process.env.MONGODB_PASSWORD;
     const mongodb_uri = process.env.MONGODB_URI;
 
-    return uri = "mongodb+srv://"+mongodb_user+":" + mongodb_password+ "@"+ mongodb_uri + "/test?retryWrites=true&w=majority";
-    //console.log(uri);
+    return uri = "mongodb+srv://"+ mongodb_user+":" + mongodb_password+ "@"+ mongodb_uri + "/test?retryWrites=true&w=majority";
+    console.log("URI:" + uri);
   },
   bar: function () {
     // whatever

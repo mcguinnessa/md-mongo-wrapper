@@ -4,7 +4,7 @@ const {MongoClient} = require('mongodb');
 
 const db_tools = require('../mongo_tools');
 
-const trafficRoute = express.Router();
+const cpuUsageRoute = express.Router();
 
 async function getdata(){
     console.log("getData() called")
@@ -17,42 +17,42 @@ async function getdata(){
       const database = client.db(db_tools.DB_NAME);
       const traffic_record = database.collection(db_tools.COLLECTION_NAME);
 
-      const filter = {_id: 0, timestamp: 1 , moTraffic: 2};
+      const filter = {_id: 0, timestamp: 1 , cpuUsage: 2};
       const docs = traffic_record.find().project(filter);
 
       var timeData = [];
-      var moData = [];
+      var cpuUsageData = [];
 
       for await (const doc of docs) {
         console.log(doc);
 
-        if ( typeof doc.moTraffic !== 'undefined' && doc.moTraffic ) {
+        if ( typeof doc.cpuUsage !== 'undefined' && doc.cpuUsage ) {
           timeData.push(doc.timestamp)
-          moData.push(doc.moTraffic)
+          cpuUsageData.push(doc.cpuUsage)
         }
       }
     } finally {
       client.close();
     }
 
-    return {timedata: timeData, mo: moData};
+    return {timedata: timeData, cpuusage: cpuUsageData};
 }
 
-trafficRoute.get("/", (req, res)=>{
+cpuUsageRoute.get("/", (req, res)=>{
 
     res.setHeader('Access-Control-Allow-Origin','*');
 
     data_prom = getdata();
 
 //    time_data = [];
-//    mo_data = [];
+//    cpu_usage_data = [];
 
     data_prom.then((data) => {
-//      mo_data = data.modata;
+//      cpu_usage_data = data.cpuusage;
 
       traffic = {
          timestamps: data.timedata,
-         data: data.mo
+         data: data.cpuusage
       }
 
     res.json(traffic)
@@ -60,7 +60,7 @@ trafficRoute.get("/", (req, res)=>{
 });
 
 
-module.exports = trafficRoute
+module.exports = cpuUsageRoute
 
 
 

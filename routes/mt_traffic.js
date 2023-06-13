@@ -17,25 +17,25 @@ async function getdata(){
       const database = client.db(db_tools.DB_NAME);
       const traffic_record = database.collection(db_tools.COLLECTION_NAME);
 
-      const filter = {_id: 0, timestamp: 1 , moTraffic: 2};
+      const filter = {_id: 0, timestamp: 1 , mtTraffic: 2};
       const docs = traffic_record.find().project(filter);
 
       var timeData = [];
-      var moData = [];
+      var mtData = [];
 
       for await (const doc of docs) {
         console.log(doc);
 
-        if ( typeof doc.moTraffic !== 'undefined' && doc.moTraffic ) {
+        if ( typeof doc.mtTraffic !== 'undefined' && doc.mtTraffic ) {
           timeData.push(doc.timestamp)
-          moData.push(doc.moTraffic)
+          mtData.push(doc.mtTraffic)
         }
       }
     } finally {
       client.close();
     }
 
-    return {timedata: timeData, mo: moData};
+    return {timedata: timeData, mt: mtData};
 }
 
 trafficRoute.get("/", (req, res)=>{
@@ -45,14 +45,14 @@ trafficRoute.get("/", (req, res)=>{
     data_prom = getdata();
 
 //    time_data = [];
-//    mo_data = [];
+//    mt_data = [];
 
     data_prom.then((data) => {
 //      mo_data = data.modata;
 
       traffic = {
          timestamps: data.timedata,
-         data: data.mo
+         data: data.mt
       }
 
     res.json(traffic)
