@@ -1,12 +1,16 @@
 const express = require("express");
-const properties = require("../package.json");
+////const properties = require("../package.json");
 const {MongoClient} = require('mongodb');
-
 const db_tools = require('../mongo_tools');
+
+//import express from "express";
+////import properties from "../package.json";
+//import MongoClient from "mongodb";
+//import db_tools from "../mongo_tools";
 
 const trafficRoute = express.Router();
 
-async function getdata(){
+async function getData(){
     console.log("getData() called")
 
     const uri = await db_tools.get_url();
@@ -15,10 +19,14 @@ async function getdata(){
 
     try { 
       const database = client.db(db_tools.DB_NAME);
-      const traffic_record = database.collection(db_tools.COLLECTION_NAME);
+      const full_collection = database.collection(db_tools.COLLECTION_NAME);
+      //console.log("Full Collection");
+      //console.log(full_collection);
 
       const filter = {_id: 0, timestamp: 1 , moTraffic: 2};
-      const docs = traffic_record.find().project(filter);
+      const docs = full_collection.find().project(filter);
+      //console.log("docs");
+      //console.log(docs);
 
       var timeData = [];
       var moData = [];
@@ -38,17 +46,40 @@ async function getdata(){
     return {timedata: timeData, mo: moData};
 }
 
-trafficRoute.get("/", (req, res)=>{
+//trafficRoute.get("/", (req, res)=>{
+//
+//    res.setHeader('Access-Control-Allow-Origin','*');
+//
+//    data_prom = getdata();
+//
+//    data_prom.then((data) => {
+//
+//      traffic = {
+//         timestamps: data.timedata,
+//         data: data.mo
+//      }
+//
+//    res.json(traffic)
+//    });
+//});
+
+function simpleFunction() {
+  return "success";
+};
+
+//function complexFunction() {
+//  return simpleFunction();
+//};
+
+
+function getHandler(req, res) {
+    console.log("getHandler() called")
 
     res.setHeader('Access-Control-Allow-Origin','*');
 
-    data_prom = getdata();
-
-//    time_data = [];
-//    mo_data = [];
+    data_prom = getData();
 
     data_prom.then((data) => {
-//      mo_data = data.modata;
 
       traffic = {
          timestamps: data.timedata,
@@ -57,10 +88,17 @@ trafficRoute.get("/", (req, res)=>{
 
     res.json(traffic)
     });
-});
+};
 
 
+trafficRoute.get("/", getHandler);
+
+
+//module.exports = {trafficRoute, simpleFunction, getData}
 module.exports = trafficRoute
+//export {
+//	trafficRoute, simpleFunction, complexFunction, getData}
+//export default trafficRoute
 
 
 

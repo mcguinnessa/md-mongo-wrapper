@@ -1,4 +1,5 @@
 module.exports = {
+//export default {
 
   DB_NAME         : "trafficDB",
   COLLECTION_NAME : "traffic",
