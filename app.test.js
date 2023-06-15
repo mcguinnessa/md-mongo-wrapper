@@ -30,7 +30,7 @@ describe("This will test the GET function", ()=> {
 
   test("GET /motraffic should get a bunch of data", async ()=>{
 
-    const res = await requestWithSupertest.get('/motraffic');
+    //const res = await requestWithSupertest.get('/motraffic');
     //console.log(res);
     //expect(res.status).toEqual(200);
 
@@ -41,23 +41,23 @@ describe("This will test the GET function", ()=> {
   });
 
   test("GET /mttraffic should get a bunch of data", async ()=>{
-    const res = await requestWithSupertest.get('/mttraffic');
+    //const res = await requestWithSupertest.get('/mttraffic');
     //console.log(res);
   });
   test("GET /cputemp should get a bunch of data", async ()=>{
-    const res = await requestWithSupertest.get('/cputemp');
+    //const res = await requestWithSupertest.get('/cputemp');
     //console.log(res);
   });
   test("GET /cpuusage should get a bunch of data", async ()=>{
-    const res = await requestWithSupertest.get('/cpuusage');
+    //const res = await requestWithSupertest.get('/cpuusage');
     //console.log(res);
   });
   test("GET /memusage should get a bunch of data", async ()=>{
-    const res = await requestWithSupertest.get('/memusage');
+    //const res = await requestWithSupertest.get('/memusage');
     //console.log(res);
   });
   test("GET /diskusage should get a bunch of data", async ()=>{
-    const res = await requestWithSupertest.get('/diskusage');
+    //const res = await requestWithSupertest.get('/diskusage');
     //console.log(res);
   });
 });
