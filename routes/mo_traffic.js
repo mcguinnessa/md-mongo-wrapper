@@ -10,6 +10,20 @@ const db_tools = require('../mongo_tools');
 
 const trafficRoute = express.Router();
 
+
+/********************************************
+ * Really need to split this out, so there 
+ * is only one connect call.
+ *
+ * Trying to streamline the upstream call
+ * causes errors when there are multiple connect
+ * calls
+ *
+ * Give the error:
+ *    topology.close({ force }, error => {
+ *
+ *
+ */
 async function getData(){
     console.log("getData() called")
 
