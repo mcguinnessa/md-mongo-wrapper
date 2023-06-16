@@ -1,27 +1,27 @@
 const express = require("express");
-const properties = require("../package.json");
+//const properties = require("../package.json");
 const {MongoClient} = require('mongodb');
-
 const db_tools = require('../mongo_tools');
+const db = require('../db');
 
 const trafficRoute = express.Router();
 
 async function getdata(){
-    console.log("getData() called")
+    console.log("memusage getData() called")
 
-    const uri = await db_tools.get_url();
-    console.log("URI:" + uri)
-    const client = new MongoClient(uri);
+//    const uri = await db_tools.get_url();
+//    console.log("URI:" + uri)
+//    const client = new MongoClient(uri);
     var timeData = [];
     var memUsageData = [];
 
     try { 
-      const database = client.db(db_tools.DB_NAME);
-      const traffic_record = database.collection(db_tools.COLLECTION_NAME);
+      const client = db.getDb();
+      //const database = client.db(db_tools.DB_NAME);
+      const full_collection = client.collection(db_tools.COLLECTION_NAME);
 
       const filter = {_id: 0, timestamp: 1 , memoryUsage: 2};
-      const docs = traffic_record.find().project(filter);
-
+      const docs = full_collection.find().project(filter);
 
       for await (const doc of docs) {
         console.log(doc);
@@ -31,10 +31,11 @@ async function getdata(){
           memUsageData.push(doc.memoryUsage)
         }
       }
-    } catch {     
-      console.log("Timed out getting data from MongoDB");
+    } catch (err){     
+      //console.log("Timed out getting data from MongoDB");
+      console.log("Timed out getting data from MongoDB/memusage:"+err);
     } finally {
-      client.close();
+//      client.close();
     }
 
     return {timedata: timeData, memusage: memUsageData};

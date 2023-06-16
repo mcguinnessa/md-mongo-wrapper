@@ -2,6 +2,7 @@ const express = require("express");
 ////const properties = require("../package.json");
 const {MongoClient} = require('mongodb');
 const db_tools = require('../mongo_tools');
+const db = require('../db');
 
 //import express from "express";
 ////import properties from "../package.json";
@@ -27,16 +28,17 @@ const trafficRoute = express.Router();
 async function getData(){
     console.log("getData() called")
 
-    const uri = await db_tools.get_url();
-    console.log("URI:" + uri)
-    const client = new MongoClient(uri);
+    //const uri = await db_tools.get_url();
+    //console.log("URI:" + uri)
+    //const client = new MongoClient(uri);
 
     var timeData = [];
     var moData = [];
 
     try { 
-      const database = client.db(db_tools.DB_NAME);
-      const full_collection = database.collection(db_tools.COLLECTION_NAME);
+      const client = db.getDb();	
+      //const database = client.db(db_tools.DB_NAME);
+      const full_collection = client.collection(db_tools.COLLECTION_NAME);
       //console.log("Full Collection");
       //console.log(full_collection);
 
@@ -54,10 +56,10 @@ async function getData(){
           moData.push(doc.moTraffic)
         }
       }
-    } catch {
-      console.log("Timed out getting data from MongoDB");
+    } catch (err) {
+      console.log("Timed out getting data from MongoDB/motraffic:"+err);
     } finally {
-      client.close();
+      //client.close();
     }
 
     return {timedata: timeData, mo: moData};

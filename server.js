@@ -1,6 +1,9 @@
 //const express = require("express");
 
 const app = require('./app.js')
+//const getDb = require("./db").getDb;
+const db = require("./db");
+const tools = require("./mongo_tools");
 
 
 //const bodyParser = require("body-parser")
@@ -31,7 +34,38 @@ console.log(server_port);
 //app.use("/memusage", memUsageRouter);
 //app.use("/diskusage", diskUsageRouter);
 
-app.listen(server_port, ()=> {
+
+//initDb(function (err) {
+//  app.listen(server_port, function (err) {
+//    if (err) {
+//      throw err; //
+//    }
+//    console.log("API Up and running on port " + port);
+//  });
+//});
+
+//var mongoUtil = require( 'mongoUtil' );
+//
+
+
+uri = tools.get_url();
+
+try {
+
+db.connectToServer( uri, tools.DB_NAME, function( err, client ) {
+  if (err) console.log(err);
+  // start the rest of your app here
+  app.listen(server_port, ()=> {
     console.log(`Server running at ${server_port}`)
-})
+  })
+} );
+
+} finally {
+  db.closeDb();
+}
+//});
+
+//app.listen(server_port, ()=> {
+//    console.log(`Server running at ${server_port}`)
+//})
 
