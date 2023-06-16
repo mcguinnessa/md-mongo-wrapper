@@ -12,6 +12,8 @@ async function getdata(){
     const uri = await db_tools.get_url();
     console.log("URI:" + uri)
     const client = new MongoClient(uri);
+    var timeData = [];
+    var cpuTempData = [];
 
     try { 
       const database = client.db(db_tools.DB_NAME);
@@ -20,8 +22,6 @@ async function getdata(){
       const filter = {_id: 0, timestamp: 1 , cpuTemp: 2};
       const docs = traffic_record.find().project(filter);
 
-      var timeData = [];
-      var cpuTempData = [];
 
       for await (const doc of docs) {
         console.log(doc);
@@ -31,6 +31,8 @@ async function getdata(){
           cpuTempData.push(doc.cpuTemp)
         }
       }
+    } catch {
+      console.log("Timed out getting data from MongoDB");
     } finally {
       client.close();
     }

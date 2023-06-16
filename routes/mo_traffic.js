@@ -17,6 +17,9 @@ async function getData(){
     console.log("URI:" + uri)
     const client = new MongoClient(uri);
 
+    var timeData = [];
+    var moData = [];
+
     try { 
       const database = client.db(db_tools.DB_NAME);
       const full_collection = database.collection(db_tools.COLLECTION_NAME);
@@ -28,8 +31,6 @@ async function getData(){
       //console.log("docs");
       //console.log(docs);
 
-      var timeData = [];
-      var moData = [];
 
       for await (const doc of docs) {
         console.log(doc);
@@ -39,6 +40,8 @@ async function getData(){
           moData.push(doc.moTraffic)
         }
       }
+    } catch {
+      console.log("Timed out getting data from MongoDB");
     } finally {
       client.close();
     }
