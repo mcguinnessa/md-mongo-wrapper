@@ -5,6 +5,27 @@ provider "aws" {
 #  secret_key = ""
 }
 
+
+variable "mongo_user"  {
+  description = "mongodb user name"
+  type = string
+  default = ""
+}
+
+variable "mongo_pass"  {
+  description = "mongodb password"
+  type = string
+  default = ""
+}
+
+variable "mongo_url"  {
+  description = "mongodb url"
+  type = string
+  default = ""
+}
+
+
+
 # No longer need this, using dockerhub repo
 #
 #resource "aws_ecr_repository" "my_first_ecr_repo" {
@@ -34,10 +55,18 @@ resource "aws_ecs_task_definition" "mongo_wrapper_task" {
       "memory": 512,
       "cpu": 256,
       "environment": [
-      { 
-        "name": "WRAPPER_PORT",
-        "value": "3000"
-      }]
+      {
+        "name": "MONGODB_USER",
+        "value": "${var.mongo_user}"
+      },
+      {
+        "name": "MONGODB_PASSWORD",
+        "value": "${var.mongo_pass}"
+      },
+      {
+        "name": "MONGODB_URI",
+        "value": "${var.mongo_url}"
+      }],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
