@@ -66,10 +66,6 @@ resource "aws_ecs_task_definition" "mongo_wrapper_task" {
       {
         "name": "MONGODB_URI",
         "value": "${var.mongo_url}"
-      },
-      {
-        "name": "SERVER_PORT",
-        "value": "3000"
       }],
       "logConfiguration": {
         "logDriver": "awslogs",
@@ -88,30 +84,29 @@ resource "aws_ecs_task_definition" "mongo_wrapper_task" {
   memory                   = 512         # Specifying the memory our container requires
   cpu                      = 256         # Specifying the CPU our container requires
 #  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole2.arn}"
-#  execution_role_arn       = "arn:aws:iam::182028175464:role/ecsTaskExecutionRole2"
-  execution_role_arn       = "arn:aws:iam::182028175464:role/AlexECSTaskExecutionRole"
+  execution_role_arn       = "arn:aws:iam::182028175464:role/ecsTaskExecutionRole2"
 }
 
-#resource "aws_iam_role" "ecsTaskExecutionRole2" {
-#  name               = "ecsTaskExecutionRole2"
-#  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
-#}
-#
-#data "aws_iam_policy_document" "assume_role_policy" {
-#  statement {
-#    actions = ["sts:AssumeRole"]
-#
-#    principals {
-#      type        = "Service"
-#      identifiers = ["ecs-tasks.amazonaws.com"]
-#    }
-#  }
-#}
-#
-#resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole2_policy" {
-#  role       = "${aws_iam_role.ecsTaskExecutionRole2.name}"
-#  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
-#}
+resource "aws_iam_role" "ecsTaskExecutionRole2" {
+  name               = "ecsTaskExecutionRole2"
+  assume_role_policy = "${data.aws_iam_policy_document.assume_role_policy.json}"
+}
+
+data "aws_iam_policy_document" "assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "ecsTaskExecutionRole2_policy" {
+  role       = "${aws_iam_role.ecsTaskExecutionRole2.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
 
 resource "aws_ecs_service" "mongo_wrapper_service" {
   name            = "mongo-wrapper-service"                             # Naming our first service
@@ -188,8 +183,8 @@ resource "aws_alb" "mongo_wrapper_load_balancer" {
 # Creating a security group for the load balancer:
 resource "aws_security_group" "load_balancer_security_group" {
   ingress {
-    from_port   = 3000 # Allowing traffic in from port 80
-    to_port     = 3000
+    from_port   = 80 # Allowing traffic in from port 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"] # Allowing traffic in from all sources
   }
@@ -204,7 +199,7 @@ resource "aws_security_group" "load_balancer_security_group" {
 
 resource "aws_lb_target_group" "mongo_wrapper_target_group" {
   name        = "target-group"
-  port        = 3000
+  port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = "${aws_default_vpc.default_vpc.id}" # Referencing the default VPC
@@ -216,7 +211,7 @@ resource "aws_lb_target_group" "mongo_wrapper_target_group" {
 
 resource "aws_lb_listener" "listener" {
   load_balancer_arn = "${aws_alb.mongo_wrapper_load_balancer.arn}" # Referencing our load balancer
-  port              = "3000"
+  port              = "80"
   protocol          = "HTTP"
   default_action {
     type             = "forward"
