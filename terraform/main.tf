@@ -33,9 +33,9 @@ variable "mongo_url"  {
 #}
 
 
-resource "aws_ecs_cluster" "mongo_wrapper_cluster" {
-  name = "mongo-wrapper-cluster" # Naming the cluster
-}
+#resource "aws_ecs_cluster" "mongo_wrapper_cluster" {
+#  name = "mongo-wrapper-cluster" # Naming the cluster
+#}
 
 #      "image": "${aws_ecr_repository.my_first_ecr_repo.repository_url}",
 resource "aws_ecs_task_definition" "mongo_wrapper_task" {
@@ -115,7 +115,8 @@ resource "aws_ecs_task_definition" "mongo_wrapper_task" {
 
 resource "aws_ecs_service" "mongo_wrapper_service" {
   name            = "mongo-wrapper-service"                             # Naming our first service
-  cluster         = "${aws_ecs_cluster.mongo_wrapper_cluster.id}"             # Referencing our created Cluster
+#  cluster         = "${aws_ecs_cluster.mongo_wrapper_cluster.id}"             # Referencing our created Cluster
+  cluster         = "monitor-cluster"             # Referencing our created Cluster
   task_definition = "${aws_ecs_task_definition.mongo_wrapper_task.arn}" # Referencing the task our service will spin up
   launch_type     = "FARGATE"
   desired_count   = 3 # Setting the number of containers we want deployed to 3
