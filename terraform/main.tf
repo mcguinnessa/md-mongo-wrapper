@@ -74,10 +74,10 @@ resource "aws_ecs_task_definition" "mongo_wrapper_task" {
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
-          "awslogs-group": "firelens-container",
+          "awslogs-group": "monitor-logging-container",
           "awslogs-region": "eu-west-2",
           "awslogs-create-group": "true",
-          "awslogs-stream-prefix": "firelens"
+          "awslogs-stream-prefix": "mdwrap"
         }
       }
     }
@@ -119,7 +119,7 @@ resource "aws_ecs_service" "mongo_wrapper_service" {
   cluster         = "monitor-cluster"             # Referencing our created Cluster
   task_definition = "${aws_ecs_task_definition.mongo_wrapper_task.arn}" # Referencing the task our service will spin up
   launch_type     = "FARGATE"
-  desired_count   = 3 # Setting the number of containers we want deployed to 3
+  desired_count   = 1 # Setting the number of containers we want deployed to 3
 
   load_balancer {
     target_group_arn = "${aws_lb_target_group.mongo_wrapper_target_group.arn}" # Referencing our target group
@@ -211,7 +211,7 @@ resource "aws_lb_target_group" "mongo_wrapper_target_group" {
   vpc_id      = "${aws_default_vpc.default_vpc.id}" # Referencing the default VPC
   health_check {
     matcher = "200,301,302"
-    path = "/"
+    path = "/motraffic"
   }
 }
 
