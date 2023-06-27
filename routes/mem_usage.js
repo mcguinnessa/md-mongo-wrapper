@@ -20,7 +20,7 @@ async function getdata(){
       //const database = client.db(db_tools.DB_NAME);
       const full_collection = client.collection(db_tools.COLLECTION_NAME);
 
-      const filter = {_id: 0, timestamp: 1 , memoryUsage: 2};
+      const filter = {_id: 0, timestamp: 1 , memUsage: 2};
       const docs = full_collection.find().project(filter);
 
       for await (const doc of docs) {

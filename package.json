@@ -18,7 +18,6 @@
     ],
     "testTimeout": 20000
   },
-
   "name": "md-mongo-wrapper",
   "description": "Provides a wrapper for the mongo / atlas database",
   "version": "1.0.0",
