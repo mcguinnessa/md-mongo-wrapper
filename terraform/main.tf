@@ -25,6 +25,13 @@ variable "mongo_url"  {
   default = ""
 }
 
+variable "docker_sha"  {
+  description = "The SHA from the docker build"
+  type = string
+  default = ""
+}
+
+
 
 
 # No longer need this, using dockerhub repo
@@ -45,7 +52,7 @@ resource "aws_ecs_task_definition" "mongo_wrapper_task" {
   [
     {
       "name": "mongo-wrapper-task",
-      "image": "mcguinnessa/md-mongo-wrapper",
+      "image": "mcguinnessa/md-mongo-wrapper@${var.docker_sha}",
       "essential": true,
       "portMappings": [
         {
