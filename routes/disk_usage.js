@@ -24,11 +24,12 @@ async function getdata(){
       const docs = full_collection.find().project(filter);
 
       for await (const doc of docs) {
-        console.log(doc);
+        //console.log(doc);
 
         if ( typeof doc.diskUsage !== 'undefined' && doc.diskUsage ) {
           timeData.push(doc.timestamp)
           diskUsageData.push(doc.diskUsage)
+          console.log("Time:" + doc.timestamp + " Disk:" + doc.diskUsage)
         }
       }
     } catch (err) {     

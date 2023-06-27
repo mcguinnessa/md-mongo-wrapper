@@ -49,11 +49,12 @@ async function getData(){
 
 
       for await (const doc of docs) {
-        console.log(doc);
+        //console.log(doc);
 
         if ( typeof doc.moTraffic !== 'undefined' && doc.moTraffic ) {
           timeData.push(doc.timestamp)
           moData.push(doc.moTraffic)
+          console.log("Time:" + doc.timestamp + " MO:" + doc.moTraffic)
         }
       }
     } catch (err) {

@@ -24,11 +24,12 @@ async function getdata(){
       const docs = full_collection.find().project(filter);
 
       for await (const doc of docs) {
-        console.log(doc);
+        //console.log(doc);
 
         if ( typeof doc.cpuTemp !== 'undefined' && doc.cpuTemp ) {
           timeData.push(doc.timestamp)
           cpuTempData.push(doc.cpuTemp)
+          console.log("Time:" + doc.timestamp + " CPU Temp:" + doc.cpuTemp)
         }
       }
     } catch (err) {

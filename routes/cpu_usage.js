@@ -25,11 +25,12 @@ async function getdata(){
       const docs = full_collection.find().project(filter);
 
       for await (const doc of docs) {
-        console.log(doc);
+        //console.log(doc);
 
         if ( typeof doc.cpuUsage !== 'undefined' && doc.cpuUsage ) {
           timeData.push(doc.timestamp)
           cpuUsageData.push(doc.cpuUsage)
+          console.log("Time:" + doc.timestamp + " CPU:" + doc.cpuUsage)
         }
       }
     } catch (err){

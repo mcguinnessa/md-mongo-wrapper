@@ -24,11 +24,12 @@ async function getdata(){
       const docs = full_collection.find().project(filter);
 
       for await (const doc of docs) {
-        console.log(doc);
+        //console.log(doc);
 
         if ( typeof doc.mtTraffic !== 'undefined' && doc.mtTraffic ) {
           timeData.push(doc.timestamp)
           mtData.push(doc.mtTraffic)
+          console.log("Time:" + doc.timestamp + " MT:" + doc.mtTraffic)
         }
       }
     } catch (err){
