@@ -100,7 +100,8 @@ resource "aws_ecs_task_definition" "mongo_wrapper_task" {
   cpu                      = 256         # Specifying the CPU our container requires
 #  execution_role_arn       = "${aws_iam_role.ecsTaskExecutionRole2.arn}"
 #  execution_role_arn       = "arn:aws:iam::182028175464:role/ecsTaskExecutionRole2"
-  execution_role_arn       = "arn:aws:iam::182028175464:role/AlexECSTaskExecutionRole"
+#  execution_role_arn       = "arn:aws:iam::182028175464:role/AlexECSTaskExecutionRole"
+  execution_role_arn       = "arn:aws:iam::637423404396:role/AlexECSTaskExecutionRole"
 }
 
 #resource "aws_iam_role" "ecsTaskExecutionRole2" {
