@@ -102,7 +102,7 @@ resource "aws_ecs_service" "mongo_wrapper_service" {
     #target_group_arn = "${aws_lb_target_group.mongo_wrapper_target_group.arn}" # Referencing our target group
     #target_group_arn = "arn:aws:elasticloadbalancing:eu-west-2:182028175464:targetgroup/md-wrapper-target-group/6a556b45daff89af"
     #target_group_arn = "arn:aws:elasticloadbalancing:eu-west-2:637423404396:targetgroup/md-wrapper-target-group/a871166e6bb1772f"
-    target_group_arn = "arn:aws:elasticloadbalancing:eu-west-2:637423404396:targetgroup/md-wrapper-target-group/9148855ede17ce1d"
+    target_group_arn = "arn:aws:elasticloadbalancing:eu-west-2:637423404396:targetgroup/md-wrapper-target-group/49daa1186d0bc8ed"
     container_name   = "${aws_ecs_task_definition.mongo_wrapper_task.family}"
     container_port   = 3000 # Specifying the container port
   }
