@@ -124,7 +124,7 @@ resource "aws_security_group" "mongo_wrapper_service_security_group" {
 #    security_groups = ["sg-039063a37c674e76b"]
     #   MD LB SG     
     #security_groups = ["sg-05edc1b1e4b5cd1e2"]
-    security_groups = ["sg-0df381f9e766dc9c4"]
+    security_groups = ["sg-010cd558cfec2d521"]
 
 
   }
